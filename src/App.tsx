@@ -61,11 +61,10 @@ function App() {
       <div className="flex flex-1 mt-[60px]">
         <Sidebar />
         <main className="flex-1 ml-16">
-          <MapView lat={37.7749} long={-122.4194} search-active/>
+          <MapView lat={-18.587258} long={-46.514675} search-active/>
         </main>
       </div>
     </div>
   );
 }
-
 export default App;
