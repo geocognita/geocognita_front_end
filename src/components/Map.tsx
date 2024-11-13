@@ -309,7 +309,6 @@ export function MapView({ lat, long, actived }) {
         terrain={{ source: 'mapbox-dem', exaggeration: 1.5 }}
         projection={isGlobeMode ? 'globe' : 'mercator'}
       >
-        
         <Source
           id="mapbox-dem"
           type="raster-dem"

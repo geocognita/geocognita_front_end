@@ -34,7 +34,8 @@ const Sidebar = ({ actived, setActive }) => {
           icon={Search}
           tooltip="Search"
           active={actived === 'Search'}
-          onClick={() => setActive('Search')}
+          // if active is Search, set active to Map View. Else, set active to Search
+          onClick={() => setActive(actived === 'Search' ? 'Map View' : 'Search')}
         />
         <SidebarIcon
           icon={Bell}
