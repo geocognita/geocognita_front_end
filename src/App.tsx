@@ -8,7 +8,7 @@ const SidebarIcon = ({ icon: Icon, tooltip, active, onClick }) => (
     <button
       className={`p-2 rounded-lg transition-colors duration-200 
         ${active 
-          ? 'text-green-600 bg-blue-50' 
+          ? 'text-green-600 bg-green-50' 
           : 'text-gray-600 hover:bg-gray-300'
         }`}
     >
