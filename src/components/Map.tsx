@@ -4,7 +4,7 @@ import { Search, X, Layers, Globe } from 'lucide-react';
 import { Map as MapIcon } from 'lucide-react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-const PLANET_API_KEY = 'PLAK1365e45d5c964bfabdc841aa6820b0af'; // Replace with your Planet API key
+const PLANET_API_KEY = 'PLAK1365e45d5c964bfabdc841aa6820b0af';
 
 const LayerSwitcher = ({ activeLayer, onLayerChange }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +34,7 @@ const LayerSwitcher = ({ activeLayer, onLayerChange }) => {
                 setIsOpen(false);
               }}
               className={`w-full px-4 py-2 text-left hover:bg-gray-100 first:rounded-t-lg last:rounded-b-lg ${
-                activeLayer.id === layer.id ? 'bg-blue-50 text-blue-600' : ''
+                activeLayer.id === layer.id ? 'bg-green-50 text-green-600' : ''
               }`}
             >
               {layer.name}
@@ -60,7 +60,7 @@ const ModeSwitcher = ({ active, onModeChange }) => {
   ];
 
   return (
-    <div className="absolute top-24 right-2 z-10">
+    <div className="absolute top-24 right-2 z-10 ">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="bg-white p-2 rounded shadow-lg border border-gray-200 hover:bg-gray-50"
@@ -78,7 +78,7 @@ const ModeSwitcher = ({ active, onModeChange }) => {
                 setIsOpen(false);
               }}
               className={`w-full px-4 py-2 text-left hover:bg-gray-100 first:rounded-t-lg last:rounded-b-lg ${
-                active.id === mode.id ? 'bg-blue-50 text-blue-600' : ''
+                active.id === mode.id ? 'bg-green-50 text-green-600' : ''
               }`}
             >
               {mode.name}
@@ -192,7 +192,7 @@ const SearchBox = ({ onSelectLocation, mapboxAccessToken }) => {
             value={query}
             onChange={(e) => handleSearch(e.target.value)}
             placeholder="Pesquisar localização..."
-            className="w-full px-4 py-2 pl-10 pr-10 bg-white rounded shadow border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 pl-10 pr-10 bg-white rounded shadow border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
           <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
           {query && (
@@ -292,14 +292,14 @@ export function MapView({ lat, long, actived }) {
         activeLayer={activeLayer} 
         onLayerChange={setActiveLayer} 
       />
-      < ModeSwitcher
-        active={analitycsMode}
-        onModeChange={setAnalitycsMode}
-      />
       <SphereToggleButton 
         active={isGlobeMode} 
         onClick={toggleGlobeMode}
       />
+      < ModeSwitcher
+        active={analitycsMode}
+        onModeChange={setAnalitycsMode}
+        />
       <Map
         {...viewState}
         onMove={evt => setViewState(evt.viewState)}
