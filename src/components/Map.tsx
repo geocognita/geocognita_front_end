@@ -255,7 +255,7 @@ export function MapView({ lat, long, actived }) {
   useEffect(() => {
     const loadGeoJson = async () => {
       try {
-        const response = await fetch('data/manhuacu.geojson');
+        const response = await fetch('/data/manhuacu.geojson');
         const data = await response.json();
         setGeoJsonData(data);
       } catch (error) {
