@@ -255,7 +255,7 @@ export function MapView({ lat, long, actived }) {
   useEffect(() => {
     const loadGeoJson = async () => {
       try {
-        const response = await fetch('../data/manhuacu.geojson');
+        const response = await fetch('data/manhuacu.geojson');
         const data = await response.json();
         setGeoJsonData(data);
       } catch (error) {
@@ -266,10 +266,13 @@ export function MapView({ lat, long, actived }) {
     loadGeoJson();
   }, []);
 
-    // Handle click on a feature
-    const handleFeatureClick = (event) => {
+  const handleFeatureClick = (event) => {
+    // Check if event and event.features exist
+    if (event && event.features && event.features.length > 0) {
       const feature = event.features[0];
-      if (feature) {
+      
+      // Additional check to ensure feature has valid geometry
+      if (feature.geometry && feature.geometry.coordinates) {
         // Center the map on the clicked feature
         setViewState(prevState => ({
           ...prevState,
@@ -283,10 +286,15 @@ export function MapView({ lat, long, actived }) {
           coordinates: feature.geometry.coordinates,
           properties: feature.properties
         });
-
+  
         console.log(feature.properties);
+      } else {
+        console.warn('Feature does not have valid coordinates');
       }
-    };
+    } else {
+      console.warn('No features found on click');
+    }
+  };
   
   const handleLocationSelect = (location) => {
     setSelectedLocation(location);
