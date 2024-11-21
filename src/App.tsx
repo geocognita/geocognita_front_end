@@ -17,7 +17,6 @@ const SidebarIcon = ({ icon: Icon, tooltip, active, onClick }) => (
       </div>
     </button>
   </div>
-
 );
 
 const Sidebar = ({ actived, setActive }) => {

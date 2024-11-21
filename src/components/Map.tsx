@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Map, { NavigationControl, GeolocateControl, Marker, Source, Layer } from 'react-map-gl';
 import { Search, X, Layers, Globe } from 'lucide-react';
 import { Map as MapIcon } from 'lucide-react';
@@ -248,6 +248,45 @@ export function MapView({ lat, long, actived }) {
 
   const [analitycsMode, setAnalitycsMode] = useState('satellite');
   const [isGlobeMode, setIsGlobeMode] = useState(false);
+  const [geoJsonData, setGeoJsonData] = useState(null);
+  const [selectedFeature, setSelectedFeature] = useState(null);
+
+  // Load your GeoJSON (you can do this via fetch or import)
+  useEffect(() => {
+    const loadGeoJson = async () => {
+      try {
+        const response = await fetch('../data/manhuacu.geojson');
+        const data = await response.json();
+        setGeoJsonData(data);
+      } catch (error) {
+        console.error('Error loading GeoJSON:', error);
+      }
+    };
+
+    loadGeoJson();
+  }, []);
+
+    // Handle click on a feature
+    const handleFeatureClick = (event) => {
+      const feature = event.features[0];
+      if (feature) {
+        // Center the map on the clicked feature
+        setViewState(prevState => ({
+          ...prevState,
+          longitude: feature.geometry.coordinates[0],
+          latitude: feature.geometry.coordinates[1],
+          zoom: 15
+        }));
+  
+        // Set the selected feature for the popup
+        setSelectedFeature({
+          coordinates: feature.geometry.coordinates,
+          properties: feature.properties
+        });
+
+        console.log(feature.properties);
+      }
+    };
   
   const handleLocationSelect = (location) => {
     setSelectedLocation(location);
@@ -308,6 +347,7 @@ export function MapView({ lat, long, actived }) {
         mapStyle={activeLayer.value}
         terrain={{ source: 'mapbox-dem', exaggeration: 1.5 }}
         projection={isGlobeMode ? 'globe' : 'mercator'}
+        onClick={handleFeatureClick}
       >
         <Source
           id="mapbox-dem"
@@ -329,6 +369,49 @@ export function MapView({ lat, long, actived }) {
           url="mapbox://styles/mapbox/satellite-streets-v12"
           tileSize={512}
         />
+
+        // Inside the Map component, add:
+        {geoJsonData && (
+            <Source type="geojson" data={geoJsonData}>
+              <Layer
+                type="fill"
+                paint={{
+                  'fill-color': '#088',
+                  'fill-opacity': 0.01
+                }}
+                interactive={true} 
+              />
+              <Layer
+                type="line"
+                paint={{
+                  'line-color': '#088',
+                  'line-width': 2
+                }}
+                interactive={true} 
+              />
+            </Source>
+        )}
+
+        {/* Popup for selected feature */}
+        {selectedFeature && (
+          <Popup
+            longitude={selectedFeature.coordinates[0]}
+            latitude={selectedFeature.coordinates[1]}
+            anchor="bottom"
+            onClose={() => setSelectedFeature(null)}
+            closeButton={true}
+            closeOnClick={false}
+          >
+            <div className="p-4">
+              <h3 className="text-lg font-bold mb-2">Feature Details</h3>
+              {Object.entries(selectedFeature.properties).map(([key, value]) => (
+                <div key={key} className="mb-1">
+                  <span className="font-semibold">{key}:</span> {value}
+                </div>
+              ))}
+            </div>
+          </Popup>
+        )}
         
         <NavigationControl position="bottom-right" />
       </Map>
