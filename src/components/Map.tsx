@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Map, { NavigationControl, GeolocateControl, Marker, Source, Layer } from 'react-map-gl';
-import { Search, X, Layers, Globe } from 'lucide-react';
+import { Search, X, Layers, Globe, Activity } from 'lucide-react';
 import { Map as MapIcon } from 'lucide-react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -16,10 +16,10 @@ const LayerSwitcher = ({ activeLayer, onLayerChange }) => {
   ];
 
   return (
-    <div className="absolute top-2 right-2 z-10">
+    <div className="absolute top-4 right-2 z-10">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-white p-2 rounded shadow-lg border border-gray-200 hover:bg-gray-50"
+        className="bg-white p-2 rounded shadow-lg border border-gray-200 hover:bg-gray-200"
       >
         <Layers size={24} />
       </button>
@@ -51,25 +51,25 @@ const ModeSwitcher = ({ active, onModeChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const modes = [
-    { id: 'ndvi', name: 'NDVI', value: 'ndvi' },
-    { id: 'ndwi', name: 'NDWI', value: 'ndwi' },
-    { id: 'msavi2', name: 'MSAVI2', value: 'msavi2' },
-    { id: 'mtvi2', name: 'MTVI2', value: 'mtvi2' },
-    { id: 'vari', name: 'VARI', value: 'vari' },
-    { id: 'tgi', name: 'TGI', value: 'tgi' },
+    { id: 'ndvi', name: 'NDVI', value: 'ndvi', description: 'Normalized Difference Vegetation Index', image: '/images/ndvi.png' },
+    { id: 'ndwi', name: 'NDWI', value: 'ndwi', description: 'Normalized Difference Water Index', image: '/images/ndwi.png' },
+    { id: 'vari', name: 'VARI', value: 'vari', description: 'Visible Atmospherically Resistant Index', image: '/images/vari.png' },
+    { id: 'msavi2', name: 'MSAVI2', value: 'msavi2', description: 'Modified Soil-Adjusted Vegetation Index', image: '/images/msavi2.png' },
+    { id: 'mtvi2', name: 'MTVI2', value: 'mtvi2', description: 'Modified Triangular Vegetation Index', image: '/images/mtvi2.png' },
+    { id: 'tgi', name: 'TGI', value: 'tgi', description: 'Triangular Greenness Index', image: '/images/tgi.png' }
   ];
 
   return (
-    <div className="absolute top-24 right-2 z-10 ">
+    <div className="absolute top-28 right-2 z-10 ">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-white p-2 rounded shadow-lg border border-gray-200 hover:bg-gray-50"
+        className="bg-white p-2 rounded shadow-lg border border-gray-200 hover:bg-gray-200"
       >
-        <Layers size={24} />
+        <Activity size={24} />
       </button>
       
       {isOpen && (
-        <div className="absolute right-12 top-0 w-48 bg-white rounded shadow-lg border border-gray-200">
+        <div className="absolute right-12 top-0 w-60 bg-white rounded shadow-lg border border-gray-200">
           {modes.map((mode) => (
             <button
               key={mode.id}
@@ -81,7 +81,14 @@ const ModeSwitcher = ({ active, onModeChange }) => {
                 active.id === mode.id ? 'bg-green-50 text-green-600' : ''
               }`}
             >
-              {mode.name}
+                          <div className="flex items-center">
+            <img src={mode.image} alt={mode.name} className="w-10 h-10 rounded-full mr-2" />
+            <div className='px-2'>
+              <div className="font-semibold">{mode.name}</div>
+              <div className="text-sm text-gray-500">{mode.description}</div>
+            </div>
+            </div>
+
             </button>
           ))}
         </div>
@@ -93,10 +100,10 @@ const ModeSwitcher = ({ active, onModeChange }) => {
 const SphereToggleButton = ({ active, onClick }) => {
   return (
     
-    <div className="absolute top-14 right-2 z-10">
+    <div className="absolute top-16 right-2 z-10">
       <button
         onClick={onClick}
-        className="bg-white p-2 rounded shadow-lg border border-gray-200 hover:bg-gray-50"
+        className="bg-white p-2 rounded shadow-lg border border-gray-200 hover:bg-gray-200"
       >
         {active ?
           <MapIcon size={24} />
